@@ -1,0 +1,78 @@
+_____________________________________
+Log Data For: Thu May 17 2018 14:26:04 GMT-0400 (Eastern Daylight Time)
+OMDB Movie Search: hackers
+_____________________________________
+Movie Title: Hackers
+Release Year: 1995
+Internet Movie Database Rating: 6.2/10
+Rotten Tomatoes Rating: 32%
+Country Movie was Produced: USA
+Language: English, Italian, Japanese, Russian
+Actors: Jonny Lee Miller, Angelina Jolie, Jesse Bradford, Matthew Lillard
+Plot: This movie is about hackers who are blamed for making a virus that will capsize 5 oil tankers.
+_____________________________________
+Log Data For: Thu May 17 2018 14:28:12 GMT-0400 (Eastern Daylight Time)
+_____________________________________
+Log Data For: Thu May 17 2018 14:29:00 GMT-0400 (Eastern Daylight Time)
+_____________________________________
+Log Data For: Thu May 17 2018 14:36:03 GMT-0400 (Eastern Daylight Time)
+Twitter Search Results For: PaulLairdDev
+_____________________________________
+Tweet #1
+Posted at: Tue May 15 18:12:55 +0000 2018
+Hello Twitter! I am currently developing a Language Interpretation and Recognition Interface node application. It h… https://t.co/fZAOJ17q8N
+_____________________________________
+Log Data For: Thu May 17 2018 14:37:03 GMT-0400 (Eastern Daylight Time)
+OMDB Movie Search: baby+got+back
+_____________________________________
+Artist: Sir Mix-A-Lot
+Song Name: Baby Got Back
+Album Name: Jackass The Movie (The Official Soundtrack)
+Spotify Link: https://open.spotify.com/track/28yT0sZlkqStSByo1j58J4
+_____________________________________
+Artist: Joe Nichols
+Song Name: Baby Got Back (feat. Darren Knight)
+Album Name: Never Gets Old
+Spotify Link: https://open.spotify.com/track/0HlrfZBnJMIwmntTsXnqcl
+_____________________________________
+Artist: Jonathan Coulton
+Song Name: Baby Got Back
+Album Name: JoCo Looks Back
+Spotify Link: https://open.spotify.com/track/20lGHKUzu3OH2D23VRpi44
+_____________________________________
+Thu May 17 2018 14:42:12 GMT-0400 (Eastern Daylight Time)
+OMDB Movie Search: The Sign
+_____________________________________
+Artist: Ty Dolla $ign
+Song Name: Or Nah (feat. The Weeknd, Wiz Khalifa and DJ Mustard) - Remix
+Album Name: Or Nah (feat. The Weeknd, Wiz Khalifa and DJ Mustard) [Remix Version]
+Spotify Link: https://open.spotify.com/track/7t2bFihaDvhIrd2gn2CWJO
+_____________________________________
+Artist: Ty Dolla $ign
+Song Name: All The Time
+Album Name: Beach House 3 (Deluxe)
+Spotify Link: https://open.spotify.com/track/6YYvO0aaoOVVbsQxk3Zd7M
+_____________________________________
+Artist: Ty Dolla $ign
+Song Name: Love U Better (feat. Lil Wayne & The-Dream)
+Album Name: Beach House 3
+Spotify Link: https://open.spotify.com/track/270aLuFCbX32hhBr8MQyPM
+_____________________________________
+Thu May 17 2018 14:42:20 GMT-0400 (Eastern Daylight Time)
+Twitter Search Results For: PaulLairdDev
+_____________________________________
+Tweet #1
+Posted at: Tue May 15 18:12:55 +0000 2018
+Hello Twitter! I am currently developing a Language Interpretation and Recognition Interface node application. It h… https://t.co/fZAOJ17q8N
+_____________________________________
+Thu May 17 2018 14:42:36 GMT-0400 (Eastern Daylight Time)
+OMDB Movie Search: princess+bride
+_____________________________________
+Movie Title: The Princess Bride
+Release Year: 1987
+Internet Movie Database Rating: 8.1/10
+Rotten Tomatoes Rating: 97%
+Country Movie was Produced: USA
+Language: English
+Actors: Cary Elwes, Mandy Patinkin, Chris Sarandon, Christopher Guest
+Plot: While home sick in bed, a young boy's grandfather reads him a story called The Princess Bride.

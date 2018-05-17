@@ -1,97 +1,207 @@
 var env = require("dotenv").config();
 var fs = require("fs");
 var request = require("request");
-var Twitter = require('twitter');
+var Twitter = require("twitter");
+var Spotify = require('node-spotify-api');
+var keys = require("./keys");
 
-var client = new Twitter({
-    consumer_key: process.env.TWITTER_CONSUMER_KEY,
-    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-    access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-});
+// Loads keys form keys.js
+var client = new Twitter(keys.twitter);
+var spotify = new Spotify(keys.spotify);
 
-// Data logging variables
-var logData;
-
-// OMDB  variables
+// Input variable
 var args = process.argv;
+// OMBD variable for multiple word movie titles
 var searchMovie = "";
+// Spotify variable for multiple word song titles
+var searchSong = "";
+// Data logging variables
+var logInput = "";
+var timeIsNow = Date.now();
+var logTime;
+
+function getLogTime() {
+    var d = new Date();
+    d.setTime(timeIsNow);
+    logTime = d;
+}
 
 function getTweets() {
     var params = {
-        screen_name: 'PaulLairdDev'
+        screen_name: "PaulLairdDev",
+        count: 20,
+        extended: true
     };
-    client.get('statuses/user_timeline', params, function (error, tweets, response) {
-        if (!error) {
-            console.log(tweets);
+    client.get("statuses/user_timeline", params, function (err, tweets, response) {
+        if (err) {
+            return console.log(`Error occurred: ${err}`);
         }
+        logInput += (`_____________________________________\n`);
+        logInput += (`${logTime}\n`);
+        logInput += (`Twitter Search Results For: ${tweets[0].user.screen_name}\n`);
+        console.log(`_____________________________________`);
+        console.log(
+            `${tweets[0].user.screen_name}, here are your latest tweets:`
+        );
+        for (var i = 0; i < tweets.length; i++) {
+            console.log(`_____________________________________`);
+            logInput += (`_____________________________________\n`);
+
+            console.log(`Tweet #${i + 1}`);
+            logInput += (`Tweet #${i + 1}\n`);
+            console.log(`Posted at: ${tweets[i].created_at}`);
+            logInput += (`Posted at: ${tweets[i].created_at}\n`);
+            console.log(`${tweets[i].text}`);
+            logInput += (`${tweets[i].text}\n`);
+        }
+        logData();
+    });
+}
+
+function getSongData(input) {
+    if (!input[3]) {
+        searchSong = "The Sign";
+    } else {
+        for (var i = 3; i < input.length; i++) {
+            if (i > 3 && i < input.length) {
+                searchSong = searchSong + "+" + input[i];
+            } else {
+                searchSong += input[i];
+            }
+        }
+    }
+    logInput += (`_____________________________________\n`);
+    logInput += (`${logTime}\n`);
+    logInput += (`OMDB Movie Search: ${searchSong}\n`);
+
+    spotify.search({
+        type: 'track',
+        query: searchSong,
+        limit: 3
+    }, function (err, data) {
+        if (err) {
+            return console.log(`Error occurred: ${err}`);
+        }
+        var results = data.tracks.items;
+        for (key in results) {
+            console.log(`_____________________________________`);
+            logInput += (`_____________________________________\n`);
+
+            console.log(`Artist: ${results[key].artists[0].name}`);
+            logInput += (`Artist: ${results[key].artists[0].name}\n`);
+
+            console.log(`Song Name: ${results[key].name}`);
+            logInput += (`Song Name: ${results[key].name}\n`);
+
+            console.log(`Album Name: ${results[key].album.name}`);
+            logInput += (`Album Name: ${results[key].album.name}\n`);
+
+            console.log(`Spotify Link: ${results[key].external_urls.spotify}`);
+            logInput += (`Spotify Link: ${results[key].external_urls.spotify}\n`);
+
+        }
+        logData();
     });
 }
 
 function readText() {
-    fs.readFile("random.txt", "utf8", function (error, data) {
-        if (error) {
-            return console.log(error);
+    logInput += (`_____________________________________\n`);
+    logInput += (`${logTime}\n`);
+    logInput += (`Random Query From Text:`);
+
+    fs.readFile("random.txt", "utf8", function (err, data) {
+        if (err) {
+            return console.log(`Error occurred: ${err}`);
         }
-
-        // We will then print the contents of data
-        console.log(data);
-
-        // Then split it by commas (to make it more readable)
-        var dataArr = data.split(",");
-
-        // We will then re-display the content as an array for later use.
-        console.log(dataArr);
-
+        console.log(`Executing: ${data}`);
+        run(data);
     });
 }
 
 function logData() {
-    fs.appendFile("log.txt", logData, function (err) {
+    fs.appendFile("log.txt", logInput, function (err) {
         if (err) {
-            console.log(err);
-        } else {
-            var logTime = Date.now();
-            console.log("log.txt updated at: " + logTime);
+            return console.log(`Error occurred: ${err}`);
         }
-
+        console.log(`log updated at: ${logTime}`);
     });
 }
 
 function OMDBquery(input) {
     // Loop to concatinate multiple word movie names
-    for (var i = 3; i < input.length; i++) {
-        if (i > 3 && i < input.length) {
-            searchMovie = searchMovie + "+" + input[i];
-        } else {
-            searchMovie += input[i];
+    if (!args[3]) {
+        searchMovie = "Mr Nobody";
+    } else {
+        for (var i = 3; i < input.length; i++) {
+            if (i > 3 && i < input.length) {
+                searchMovie = searchMovie + "+" + input[i];
+            } else {
+                searchMovie += input[i];
+            }
         }
     }
-
+    logInput += (`_____________________________________\n`);
+    logInput += (`${logTime}\n`);
+    logInput += (`OMDB Movie Search: ${searchMovie}\n`);
     // Make the API request to OMDB
-    var queryUrl = "http://www.omdbapi.com/?t=" + searchMovie + "&y=&plot=short&apikey=trilogy";
-    request(queryUrl, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-            console.log("_____________________________________");
-            console.log("Movie Title: " + JSON.parse(body).Title);
-            console.log("Release Year: " + JSON.parse(body).Year);
-            console.log(JSON.parse(body).Ratings[0].Source + " Rating: " + JSON.parse(body).Ratings[0].Value);
-            console.log(JSON.parse(body).Ratings[1].Source + " Rating: " + JSON.parse(body).Ratings[1].Value);
-            console.log("Country Movie was Produced: " + JSON.parse(body).Country);
-            console.log("Language: " + JSON.parse(body).Language);
-            console.log("Actors: " + JSON.parse(body).Actors);
-            console.log("Plot: " + JSON.parse(body).Plot);
+    var queryUrl =
+        "http://www.omdbapi.com/?t=" +
+        searchMovie +
+        "&y=&plot=short&apikey=trilogy";
+    request(queryUrl, function (err, response, body) {
+        if (err) {
+            return console.log(`Error occurred: ${err}`);
         }
+        console.log(`_____________________________________`);
+        logInput += (`_____________________________________\n`);
+
+        console.log(`Movie Title: ${JSON.parse(body).Title}`);
+        logInput += (`Movie Title: ${JSON.parse(body).Title}\n`);
+
+        console.log(`Release Year: ${JSON.parse(body).Year}`);
+        logInput += (`Release Year: ${JSON.parse(body).Year}\n`);
+
+        console.log(`${JSON.parse(body).Ratings[0].Source} Rating: ${JSON.parse(body).Ratings[0].Value}`);
+        logInput += (`${JSON.parse(body).Ratings[0].Source} Rating: ${JSON.parse(body).Ratings[0].Value}\n`);
+
+        console.log(`${JSON.parse(body).Ratings[1].Source} Rating: ${JSON.parse(body).Ratings[1].Value}`);
+        logInput += (`${JSON.parse(body).Ratings[1].Source} Rating: ${JSON.parse(body).Ratings[1].Value}\n`);
+
+        console.log(`Country Movie was Produced: ${JSON.parse(body).Country}`);
+        logInput += (`Country Movie was Produced: ${JSON.parse(body).Country}\n`);
+
+        console.log(`Language: ${JSON.parse(body).Language}`);
+        logInput += (`Language: ${JSON.parse(body).Language}\n`);
+
+        console.log(`Actors: ${JSON.parse(body).Actors}`);
+        logInput += (`Actors: ${JSON.parse(body).Actors}\n`);
+
+        console.log(`Plot: ${JSON.parse(body).Plot}`);
+        logInput += (`Plot: ${JSON.parse(body).Plot}\n`);
+        logData();
     });
+
 }
 
-switch (args[2]) {
-    case "omdb":
-        OMDBquery(args);
-        break;
-    case "twitter":
-        getTweets();
-        break;
-    default:
-        // Spotify something
+function run(input) {
+    getLogTime();
+    // logInput = (`Query Run: ${input[2]}`);
+    switch (input[2]) {
+        case "omdb":
+            OMDBquery(input);
+            break;
+        case "twitter":
+            getTweets();
+            break;
+        case "spotify":
+            getSongData(input);
+            break;
+        case "random":
+            readText();
+            break;
+        default:
+            getSongData();
+    }
 }
+
+run(args);
