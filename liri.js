@@ -37,7 +37,6 @@ function getTweets() {
             return console.log(`Error occurred: ${err}`);
         }
         logInput += `_____________________________________\n`;
-        logInput += `${logTime}\n`;
         logInput += `Twitter Search Results For: ${tweets[0].user.screen_name}\n`;
         console.log(`_____________________________________`);
         console.log(`${tweets[0].user.screen_name}, here are your latest tweets:`);
@@ -69,7 +68,6 @@ function getSongData(input) {
         }
     }
     logInput += `_____________________________________\n`;
-    logInput += `${logTime}\n`;
     logInput += `OMDB Movie Search: ${searchSong}\n`;
 
     spotify.search({
@@ -105,7 +103,6 @@ function getSongData(input) {
 
 function readText() {
     logInput += `_____________________________________\n`;
-    logInput += `${logTime}\n`;
     logInput += `Random Query From Text:`;
 
     fs.readFile("random.txt", "utf8", function (err, data) {
@@ -142,7 +139,6 @@ function OMDBquery(input) {
         }
     }
     logInput += `_____________________________________\n`;
-    logInput += `${logTime}\n`;
     logInput += `OMDB Movie Search: ${searchMovie}\n`;
     // Make the API request to OMDB
     var queryUrl =
@@ -197,6 +193,9 @@ function OMDBquery(input) {
 
 function run(input) {
     getLogTime();
+    logInput += `_____________________________________\n`;
+    logInput += `${logTime}\n`;
+    logInput += `New Session Input: ${input}\n`;
     switch (input[2]) {
         case "omdb":
             OMDBquery(input);
@@ -212,6 +211,8 @@ function run(input) {
             break;
         default:
             console.log("I'm sorry, you did not give my any instruction.");
+            logInput += `No command to execute, user input was invalid.\n`;
+            logData();
     }
 }
 
