@@ -2,7 +2,7 @@ var env = require("dotenv").config();
 var fs = require("fs");
 var request = require("request");
 var Twitter = require("twitter");
-var Spotify = require('node-spotify-api');
+var Spotify = require("node-spotify-api");
 var keys = require("./keys");
 
 // Loads keys form keys.js
@@ -36,23 +36,21 @@ function getTweets() {
         if (err) {
             return console.log(`Error occurred: ${err}`);
         }
-        logInput += (`_____________________________________\n`);
-        logInput += (`${logTime}\n`);
-        logInput += (`Twitter Search Results For: ${tweets[0].user.screen_name}\n`);
+        logInput += `_____________________________________\n`;
+        logInput += `${logTime}\n`;
+        logInput += `Twitter Search Results For: ${tweets[0].user.screen_name}\n`;
         console.log(`_____________________________________`);
-        console.log(
-            `${tweets[0].user.screen_name}, here are your latest tweets:`
-        );
+        console.log(`${tweets[0].user.screen_name}, here are your latest tweets:`);
         for (var i = 0; i < tweets.length; i++) {
             console.log(`_____________________________________`);
-            logInput += (`_____________________________________\n`);
+            logInput += `_____________________________________\n`;
 
             console.log(`Tweet #${i + 1}`);
-            logInput += (`Tweet #${i + 1}\n`);
+            logInput += `Tweet #${i + 1}\n`;
             console.log(`Posted at: ${tweets[i].created_at}`);
-            logInput += (`Posted at: ${tweets[i].created_at}\n`);
+            logInput += `Posted at: ${tweets[i].created_at}\n`;
             console.log(`${tweets[i].text}`);
-            logInput += (`${tweets[i].text}\n`);
+            logInput += `${tweets[i].text}\n`;
         }
         logData();
     });
@@ -70,51 +68,54 @@ function getSongData(input) {
             }
         }
     }
-    logInput += (`_____________________________________\n`);
-    logInput += (`${logTime}\n`);
-    logInput += (`OMDB Movie Search: ${searchSong}\n`);
+    logInput += `_____________________________________\n`;
+    logInput += `${logTime}\n`;
+    logInput += `OMDB Movie Search: ${searchSong}\n`;
 
     spotify.search({
-        type: 'track',
-        query: searchSong,
-        limit: 3
-    }, function (err, data) {
-        if (err) {
-            return console.log(`Error occurred: ${err}`);
+            type: "track",
+            query: searchSong,
+            limit: 3
+        },
+        function (err, data) {
+            if (err) {
+                return console.log(`Error occurred: ${err}`);
+            }
+            var results = data.tracks.items;
+            for (key in results) {
+                console.log(`_____________________________________`);
+                logInput += `_____________________________________\n`;
+
+                console.log(`Artist: ${results[key].artists[0].name}`);
+                logInput += `Artist: ${results[key].artists[0].name}\n`;
+
+                console.log(`Song Name: ${results[key].name}`);
+                logInput += `Song Name: ${results[key].name}\n`;
+
+                console.log(`Album Name: ${results[key].album.name}`);
+                logInput += `Album Name: ${results[key].album.name}\n`;
+
+                console.log(`Spotify Link: ${results[key].external_urls.spotify}`);
+                logInput += `Spotify Link: ${results[key].external_urls.spotify}\n`;
+            }
+            logData();
         }
-        var results = data.tracks.items;
-        for (key in results) {
-            console.log(`_____________________________________`);
-            logInput += (`_____________________________________\n`);
-
-            console.log(`Artist: ${results[key].artists[0].name}`);
-            logInput += (`Artist: ${results[key].artists[0].name}\n`);
-
-            console.log(`Song Name: ${results[key].name}`);
-            logInput += (`Song Name: ${results[key].name}\n`);
-
-            console.log(`Album Name: ${results[key].album.name}`);
-            logInput += (`Album Name: ${results[key].album.name}\n`);
-
-            console.log(`Spotify Link: ${results[key].external_urls.spotify}`);
-            logInput += (`Spotify Link: ${results[key].external_urls.spotify}\n`);
-
-        }
-        logData();
-    });
+    );
 }
 
 function readText() {
-    logInput += (`_____________________________________\n`);
-    logInput += (`${logTime}\n`);
-    logInput += (`Random Query From Text:`);
+    logInput += `_____________________________________\n`;
+    logInput += `${logTime}\n`;
+    logInput += `Random Query From Text:`;
 
     fs.readFile("random.txt", "utf8", function (err, data) {
         if (err) {
             return console.log(`Error occurred: ${err}`);
         }
         console.log(`Executing: ${data}`);
-        run(data);
+        var dataArr = data.split(",");
+        dataArr.splice(0, 0, "PleaseVisit", "http://Laird.Codes");
+        run(dataArr);
     });
 }
 
@@ -140,9 +141,9 @@ function OMDBquery(input) {
             }
         }
     }
-    logInput += (`_____________________________________\n`);
-    logInput += (`${logTime}\n`);
-    logInput += (`OMDB Movie Search: ${searchMovie}\n`);
+    logInput += `_____________________________________\n`;
+    logInput += `${logTime}\n`;
+    logInput += `OMDB Movie Search: ${searchMovie}\n`;
     // Make the API request to OMDB
     var queryUrl =
         "http://www.omdbapi.com/?t=" +
@@ -153,39 +154,49 @@ function OMDBquery(input) {
             return console.log(`Error occurred: ${err}`);
         }
         console.log(`_____________________________________`);
-        logInput += (`_____________________________________\n`);
+        logInput += `_____________________________________\n`;
 
         console.log(`Movie Title: ${JSON.parse(body).Title}`);
-        logInput += (`Movie Title: ${JSON.parse(body).Title}\n`);
+        logInput += `Movie Title: ${JSON.parse(body).Title}\n`;
 
         console.log(`Release Year: ${JSON.parse(body).Year}`);
-        logInput += (`Release Year: ${JSON.parse(body).Year}\n`);
+        logInput += `Release Year: ${JSON.parse(body).Year}\n`;
 
-        console.log(`${JSON.parse(body).Ratings[0].Source} Rating: ${JSON.parse(body).Ratings[0].Value}`);
-        logInput += (`${JSON.parse(body).Ratings[0].Source} Rating: ${JSON.parse(body).Ratings[0].Value}\n`);
+        console.log(
+            `${JSON.parse(body).Ratings[0].Source} Rating: ${
+        JSON.parse(body).Ratings[0].Value
+      }`
+        );
+        logInput += `${JSON.parse(body).Ratings[0].Source} Rating: ${
+      JSON.parse(body).Ratings[0].Value
+    }\n`;
 
-        console.log(`${JSON.parse(body).Ratings[1].Source} Rating: ${JSON.parse(body).Ratings[1].Value}`);
-        logInput += (`${JSON.parse(body).Ratings[1].Source} Rating: ${JSON.parse(body).Ratings[1].Value}\n`);
+        console.log(
+            `${JSON.parse(body).Ratings[1].Source} Rating: ${
+        JSON.parse(body).Ratings[1].Value
+      }`
+        );
+        logInput += `${JSON.parse(body).Ratings[1].Source} Rating: ${
+      JSON.parse(body).Ratings[1].Value
+    }\n`;
 
         console.log(`Country Movie was Produced: ${JSON.parse(body).Country}`);
-        logInput += (`Country Movie was Produced: ${JSON.parse(body).Country}\n`);
+        logInput += `Country Movie was Produced: ${JSON.parse(body).Country}\n`;
 
         console.log(`Language: ${JSON.parse(body).Language}`);
-        logInput += (`Language: ${JSON.parse(body).Language}\n`);
+        logInput += `Language: ${JSON.parse(body).Language}\n`;
 
         console.log(`Actors: ${JSON.parse(body).Actors}`);
-        logInput += (`Actors: ${JSON.parse(body).Actors}\n`);
+        logInput += `Actors: ${JSON.parse(body).Actors}\n`;
 
         console.log(`Plot: ${JSON.parse(body).Plot}`);
-        logInput += (`Plot: ${JSON.parse(body).Plot}\n`);
+        logInput += `Plot: ${JSON.parse(body).Plot}\n`;
         logData();
     });
-
 }
 
 function run(input) {
     getLogTime();
-    // logInput = (`Query Run: ${input[2]}`);
     switch (input[2]) {
         case "omdb":
             OMDBquery(input);
@@ -200,7 +211,7 @@ function run(input) {
             readText();
             break;
         default:
-            getSongData();
+            console.log("I'm sorry, you did not give my any instruction.");
     }
 }
 
